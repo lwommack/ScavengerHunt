@@ -1,2 +1,2 @@
 # ScavengerHunt
-App for organizing scavenger hunt.
+App for organizing scavenger hunts.
