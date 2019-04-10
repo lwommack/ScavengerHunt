@@ -9,7 +9,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.teal,
       ),
       home: MyHomePage(title: 'Scavengar Hunt'),
     );
@@ -27,12 +27,12 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   TextEditingController _controller = new TextEditingController();
-  List<String> items = [];
+  Map<String, bool> items = new Map<String, bool>();
   bool iconState = false;
 
   void addItem(String item) {
     if(item.length > 0)
-      setState(() => items.add(item));
+      setState(() => items.addAll({item: false}));
   }
 
   Widget buildList() {
@@ -40,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
       child: ListView.builder(
         itemBuilder: (context, index) {
           if (index < items.length) {
-            return buildItem(items[index]);
+            return buildItem(items.keys.elementAt(0));
           }
         },
       ),
@@ -76,13 +76,12 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget buildItem(String item) {
-    return new ListTile(
+    return CheckboxListTile(
       title: Text(item),
-      leading: iconState ? Icon(Icons.check_box) : Icon(Icons.check_box_outline_blank),
-      onTap: () {
-        iconState = !iconState;
+      value: items[item],
+      onChanged: (bool value) {
         setState(() {
-
+          items[item] = !items[item];
         });
       },
     );
