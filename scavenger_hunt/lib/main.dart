@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
-import 'pages/home.dart';
+import 'services/authentication.dart';
+import 'pages/root_page.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(new MyApp());
+}
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Scavengar Hunt App',
-      theme: ThemeData(
-        primarySwatch: Colors.teal,
-      ),
-      home: MyHomePage(title: 'Scavengar Hunt'),
-    );
+        title: 'Scavenger Hunt',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: RootPage(auth: Auth()));
   }
 }
+
+
