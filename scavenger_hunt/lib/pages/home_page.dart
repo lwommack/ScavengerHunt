@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import '../services/authentication.dart';
 import 'package:firebase_database/firebase_database.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/todo.dart';
 import 'dart:async';
+import 'camera_page.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.auth, this.userId, this.onSignedOut})
@@ -140,11 +142,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   _addNewTodo(String todoItem) {
-    if (todoItem.length > 0) {
-
-      Todo todo = new Todo(todoItem.toString(), widget.userId, false);
-      _database.reference().child("todo").push().set(todo.toJson());
-    }
+//    if (todoItem.length > 0) {
+//      var item = <String, Object>{};
+//      item["completed"] = false;
+//      item["subject"] = todoItem.toString();
+////      item["userId"] = widget.userId;
+////      T o d o  t o d o = T o d o(todoItem.toString(), widget.userId, false);
+////      _database.reference().child("t o d o").push().set(t o d o.toJson());
+//    }
   }
 
   _updateTodo(Todo todo){
@@ -170,24 +175,24 @@ class _HomePageState extends State<HomePage> {
         context: context,
       builder: (BuildContext context) {
           return AlertDialog(
-            content: new Row(
+            content: Row(
               children: <Widget>[
-                new Expanded(child: new TextField(
+                Expanded(child: TextField(
                   controller: _textEditingController,
                   autofocus: true,
-                  decoration: new InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Add new todo',
                   ),
                 ))
               ],
             ),
             actions: <Widget>[
-              new FlatButton(
+              FlatButton(
                   child: const Text('Cancel'),
                   onPressed: () {
                     Navigator.pop(context);
                   }),
-              new FlatButton(
+              FlatButton(
                   child: const Text('Save'),
                   onPressed: () {
                     _addNewTodo(_textEditingController.text.toString());
@@ -243,24 +248,51 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-        appBar: new AppBar(
-          title: new Text('Scavenger Hunt'),
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.indigo,
+          title: Text('Scavenger Hunt'),
           actions: <Widget>[
-            new FlatButton(
-                child: new Text('Logout',
-                    style: new TextStyle(fontSize: 17.0, color: Colors.white)),
+            FlatButton(
+                child: Text('Logout',
+                    style: TextStyle(fontSize: 17.0, color: Colors.white)),
                 onPressed: _signOut)
           ],
         ),
-        body: _showTodoList(),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            _showDialog(context);
-          },
-          tooltip: 'Increment',
-          child: Icon(Icons.add),
+        body: Stack(
+          children: <Widget>[
+            _showTodoList(),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                FloatingActionButton(
+                  onPressed: () {
+                    _showDialog(context);
+                  },
+                  tooltip: 'Increment',
+                  child: Icon(Icons.add),
+                  heroTag: null,
+                ),
+                Padding(padding: EdgeInsets.symmetric(vertical: 250.0,horizontal: 120.0)),
+                FloatingActionButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => CameraApp()));
+                  },
+                  tooltip: 'Take Picture',
+                  child: Icon(Icons.camera),
+                  heroTag: null,
+                ),
+              ],
+            ),
+          ],
         )
+//        floatingActionButton: FloatingActionButton(
+//          onPressed: () {
+//            _showDialog(context);
+//          },
+//          tooltip: 'Increment',
+//          child: Icon(Icons.add),
+//        )
     );
   }
 }
