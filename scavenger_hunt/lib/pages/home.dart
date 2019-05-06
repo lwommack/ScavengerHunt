@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'choose_hunt.dart';
+import 'hunt_create.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -10,65 +12,17 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  TextEditingController _controller = new TextEditingController();
-  Map<String, bool> items = new Map<String, bool>();
-  bool iconState = false;
 
-  void addItem(String item) {
-    if(item.length > 0)
-      setState(() => items.addAll({item: false}));
+  void chooseHunt() {
+    Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
+      return Choose_Hunt(title: 'Select A Scavenger Hunt');
+    }));
   }
 
-  Widget buildList() {
-    return Flexible(
-      child: ListView.builder(
-        itemBuilder: (context, index) {
-          if (index < items.length) {
-            return buildItem(items.keys.elementAt(index));
-          }
-        },
-      ),
-    );
-  }
-
-  Widget enterItem() {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Flexible(
-          child: TextField(
-            controller: _controller,
-            autofocus: false,
-            textCapitalization: TextCapitalization.sentences,
-            decoration: new InputDecoration(
-                fillColor: Theme.of(context).dialogBackgroundColor,
-                hintStyle: TextStyle(color: Theme.of(context).hintColor),
-                hintText: 'Enter an item...',
-                contentPadding: const EdgeInsets.all(16.0)),
-          ),
-        ),
-        RaisedButton(
-          onPressed: () {
-            addItem(_controller.value.text);
-            _controller.clear();
-          },
-          child: Text('Submit'),
-          color: Theme.of(context).buttonColor,
-        ),
-      ],
-    );
-  }
-
-  Widget buildItem(String item) {
-    return CheckboxListTile(
-      title: Text(item),
-      value: items[item],
-      onChanged: (bool value) {
-        setState(() {
-          items[item] = !items[item];
-        });
-      },
-    );
+  void createHunt() {
+    Navigator.of(context).push(new MaterialPageRoute(builder: (context){
+      return HuntCreate(title: 'Create A New Scavenger Hunt');
+    }));
   }
 
   @override
@@ -77,11 +31,33 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Column(
-        children: <Widget>[
-          enterItem(),
-          buildList(),
-        ],
+      body: Container(
+        alignment: Alignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            RaisedButton(
+              child: Text('Login'),
+              onPressed: () {
+                SnackBar(
+                    content: SnackBarAction(
+                        label: 'Login Coming Soon',
+                        onPressed: null,
+                    ),
+                );
+              },
+            ),
+            RaisedButton(
+              child: Text('Select Scavnegar Hunt'),
+              onPressed: chooseHunt,
+            ),
+            RaisedButton(
+              child: Text('Create Scavnegar Hunt'),
+              onPressed: createHunt,
+            ),
+          ],
+        ),
       ),
     );
   }
